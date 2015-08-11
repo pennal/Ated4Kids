@@ -22,11 +22,13 @@ void setup() {
  *  @return Number of clicks needed
  */
 double numberOfClicksForLength(double lengthInCm){
+    // Enter the diameter of the wheel you are using, in millimeters
     int diameterOfWheelInMM = 32;
+    // Circumference of the wheel
     double lengthOfRotation = 2*3.14*(diameterOfWheelInMM/20.0);
     double ratioOfLength = lengthInCm/lengthOfRotation;
+    // Number of clicks required
     double numberOfClicks = 16 * ratioOfLength;
-    
     return numberOfClicks;
 }
 
@@ -41,16 +43,22 @@ void delayForNumberOfClicks(double numberOfClicks){
     int sensorcount1 = 0;
     long count = 0;
     
-    
-    
     while(count <= numberOfClicks){
+        // Read from the encoders
         analogWrite (10,255);
         digitalWrite(12,LOW);
         analogWrite (11,255);
         digitalWrite(13,LOW);
         delay(20);
         rawsensorValue = analogRead(0);
-        if (rawsensorValue < 720){ //Min value is 400 and max value is 800, so state chance can be done at 600.
+        /* WARNING: READ
+        *  This is where a bit of experimentation is required. The value for the switch can 
+        *  vary depending on you sensor, as well as the amount of light present in the room.
+        *  Best is to simply print the values, and find where the status change happens.
+        * There is a good chance the change is done at around 600, but as I said, it might
+        * vary for your particular case
+        */
+        if (rawsensorValue < 720){ 
             sensorcount1 = 1;
         } else {
             sensorcount1 = 0;
@@ -61,11 +69,6 @@ void delayForNumberOfClicks(double numberOfClicks){
         }
         sensorcount0 = sensorcount1;
     }
-    
-    rawsensorValue = 0; // variable to store the value coming from the sensor
-    sensorcount0 = 0;
-    sensorcount1 = 0;
-    count = 0;
 }
 
 /**
@@ -96,7 +99,11 @@ void moveForward(double cm){
     digitalWrite(M2,LOW);
     
 }
-
+/**
+ *  Move backwards
+ *
+ *  @param cm amount in Cm tho which the robot has to move
+ */
 void moveBackwards(double cm){
     double numberOfClicks = numberOfClicksForLength(cm);
     
