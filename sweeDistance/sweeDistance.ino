@@ -7,7 +7,7 @@ int M1 = 8;
 int M2 = 7;
 int Speed = 255;
 double n = 87.5;
-const int servoPin = 11;
+const int servoPin = 13;
 const int pingPin = 3;
 const int deg = 180;
 

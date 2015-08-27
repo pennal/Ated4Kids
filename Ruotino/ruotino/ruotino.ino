@@ -1,15 +1,19 @@
 #include <Servo.h>
-// Init Servo
 Servo myservo;
 int E1 = 6;
 int E2 = 5;
 int M1 = 8;
 int M2 = 7;
+int BNa = 11;
+int BNb = 12;
+int Centro = 10;
+int Speed;
+int Meta;
 int Speed = 100;
 double n = 87.5;
 
 #define trigPin 13
-#define echoPin 10
+#define echoPin 9 
 
 const int servoPin = 2;
 const int deg = 180;
@@ -19,17 +23,20 @@ int l = deg/delta;
 
 
 void setup() {
-  // put your setup code here, to run once:
   myservo.attach(servoPin);
   Serial.begin(9600);
   
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
+  pinMode(BNa, INPUT);
+  pinMode(BNb, INPUT);
+  pinMode(Centro, INPUT);
+  
 
   int i;
   for(i=5;i<=8;i++)
     pinMode(i, OUTPUT);
-  myservo.write(0);
+  myservo.write(90);
 }
 void aspetta()
 {
@@ -104,11 +111,12 @@ void rotateForAngle(double angolo){
   n = 87.5;
 }
 
-
-void loop() {
-//  // put your main code here, to run repeatedly:
-
-  int a[l];
+void SweepDistance() {
+  int dist = getLength();
+  int minDist = 30;
+  if (dist < minDist){
+    aspetta();
+    int a[l];
   myservo.write(0);
   
   for (int i=0; i<l; i++){
@@ -119,7 +127,7 @@ void loop() {
     myservo.write((i+1) * delta);
     delay(150);
   }
-  myservo.write(0);
+  myservo.write(90);
 
   // Trova la distanza maggiore
   double maxValue = a[0];
@@ -131,50 +139,16 @@ void loop() {
     }
   }
 
-
-
-
-
   int angolo = maxPointer * delta;
   
   
   Serial.println(angolo);
   rotateForAngle(angolo);
-  delay(500);
-  
-  
-//  // Continua per 5 cm
-//  double V = (double)Speed/255.0;
-//    
-//  double t = (5 * n)/V;
-//  Serial.print("Forward (s): ");
-//  Serial.println(t);
-//  //avanti();
-//  //delay(t);
-//  //aspetta();
-//  Serial.println("END");
-
+  } else {
     avanti();
-    delay(3000);
-    aspetta();
+  }
   
-//    rotateForAngle(120);
-//  delay(1500);
-//  
-//    rotateForAngle(150);
-//  delay(1500);
-//  
-//    rotateForAngle(180);
-//  delay(2500);
-//  
-//    rotateForAngle(120);
-//  delay(1500);
-//  
-//    rotateForAngle(150);
-//  delay(1500);
-//  
-//    rotateForAngle(180);
-//  delay(1500);
+  delay(50);
   
 }
 
@@ -183,7 +157,6 @@ double getLength(){
   digitalWrite(trigPin, LOW);  // Added this line
   delayMicroseconds(2); // Added this line
   digitalWrite(trigPin, HIGH);
-//  delayMicroseconds(1000); - Removed this line
   delayMicroseconds(10); // Added this line
   digitalWrite(trigPin, LOW);
   duration = pulseIn(echoPin, HIGH);
@@ -199,4 +172,66 @@ long microsecondsToInches(long microseconds)
 long microsecondsToCentimeters(long microseconds)
 {
   return microseconds / 29 / 2;
+  
+}
+void SeguiLinea() {
+
+    int valBNa = digitalRead(BNa);
+  int valBNb = digitalRead(BNb);
+  int valCentro = digitalRead(Centro);
+
+  
+  Serial.print("Bna: ");
+  Serial.print(valBNa);
+
+  Serial.print("; Bnb: ");
+  Serial.print(valBNb);
+  Serial.println();
+
+  if (valCentro == 0) {
+    Speed = 180;
+  } else {
+    Speed = 140;
+  }
+
+  if (valBNa == 0 && valBNb == 1){
+    Meta = Speed + 60;
+      destra();  
+  } else if (valBNa == 1 && valBNb == 0) {
+      Meta = Speed + 60;
+      sinistra();  
+  } else if(valBNa == 0 && valBNb == 0) {
+    dritto();
+  } else {
+      dritto();
+  }
+  delay(30);
+  
+}
+void Birilli() {
+  
+  }
+void Lettura() {
+  
+  }
+void Ponte() {
+  
+  }
+void loop() {
+  if(Lettura() == Schedina)
+  {
+    SweepDistance();
+  }
+  else if(Lettura() == Schedina)
+  {
+    Birilli();
+  }
+  else if(Lettura() == Schedina)
+  {
+    Ponte();
+  }
+  else
+  {
+    SeguiLinea();
+  }
 }

@@ -9,12 +9,16 @@
 
 #define pinSensoreSinistro 11
 #define pinSensoreDestro 12
+#define pinSensoreCentro 10
 
 
 //int pinSensoreSinistro = 11;
 //int pinSensoreDestro = 12;
 int Speed = 255;
-int valoreDaSottrarreAVelocita = 10;
+int valoreDaSottrarreAVelocita = 20;
+
+
+int prevState = 1;
 
 
 int primaSinistra = 1;
@@ -64,9 +68,26 @@ void dritto()
   analogWrite (E2,Speed);
   digitalWrite(M2,HIGH);
 }
+
+void indietro()
+{
+  analogWrite (E1,Speed);
+  digitalWrite(M1,LOW);
+  analogWrite (E2,Speed);
+  digitalWrite(M2,LOW);
+}
 void loop()
 {
-  
+//  int valCentro = digitalRead(pinSensoreCentro);
+//  if (prevState != valCentro) {
+//    prevState = valCentro;
+//    STOP();
+//  }
+//  if (valCentro == 0) {
+//    Speed = 200;
+//  } else {
+//    Speed = 120;
+//  }
   
   // Leggi valore dei sensori. Puo essere 0 o 1. Rispettivamente nero e bianco
   int valoreSensoreSinistro = digitalRead(pinSensoreSinistro);
@@ -79,23 +100,29 @@ void loop()
   
   
   
-  if (primaSinistra != valoreSensoreSinistro || primaDestra != valoreSensoreDestro){
-    STOP();
-  }
+//  if (primaSinistra != valoreSensoreSinistro || primaDestra != valoreSensoreDestro){
+//    STOP();
+//  }
   
-  primaSinistra = valoreSensoreSinistro;
-  primaDestra = valoreSensoreDestro;
+//  primaSinistra = valoreSensoreSinistro;
+//  primaDestra = valoreSensoreDestro;
   
 
   if (valoreSensoreSinistro == 0 && valoreSensoreDestro == 1){
-    Speed = 150;
+      Speed = 150;
       sinistra();  
+      Speed = 150;
   } else if (valoreSensoreSinistro == 1 && valoreSensoreDestro == 0) {
       Speed = 150;
-      destra();  
-  } else {
-    Speed = 200;
+      destra();
+      Speed = 150;
+  } else if (valoreSensoreSinistro == 1 && valoreSensoreDestro == 1){
+    Speed = 150;
     dritto();
+  } else {
+    Speed = 150;
+    indietro();
+    
   }
   
 

@@ -4,8 +4,9 @@ int E1 = 6;
 int E2 = 5;
 int M1 = 8;
 int M2 = 7;
-int BNa = 9;
-int BNb = 10;
+int BNa = 11;
+int BNb = 12;
+int Centro = 10;
 int Speed;
 int Meta;
 
@@ -16,6 +17,7 @@ void setup()
     pinMode(i, OUTPUT);
   pinMode(BNa, INPUT);
   pinMode(BNb, INPUT);
+  pinMode(Centro, INPUT);
   
   Serial.begin(9600);
 }
@@ -57,6 +59,7 @@ void loop()
 {
   int valBNa = digitalRead(BNa);
   int valBNb = digitalRead(BNb);
+  int valCentro = digitalRead(Centro);
 
   
   Serial.print("Bna: ");
@@ -66,40 +69,26 @@ void loop()
   Serial.print(valBNb);
   Serial.println();
 
+  if (valCentro == 0) {
+    Speed = 180;
+  } else {
+    Speed = 140;
+  }
 
   if (valBNa == 0 && valBNb == 1){
-    Speed = 150;
-    Meta = Speed;
+    //Speed = 70;
+    Meta = Speed + 60;
       destra();  
   } else if (valBNa == 1 && valBNb == 0) {
-    Speed = 150;
-      Meta = Speed;
+    //Speed = 70;
+      Meta = Speed + 60;
       sinistra();  
   } else if(valBNa == 0 && valBNb == 0) {
     dritto();
   } else {
-    Speed = 200;
+    //Speed = 90;
       dritto();
   }
+  delay(30);
   
-//  if(((valBNa == 0)||(valBNb == 0))||(valBNa == 0)&&(valBNb == 0)){
-//    if(valBNa == 0) {
-//      Speed = 150;
-//      Meta = Speed-25;
-//      destra();  
-//    } 
-//    else if(valBNb == 0) {
-//      Speed = 150;
-//      Meta = Speed-25;
-//      sinistra();  
-//    }
-//    else if((valBNa == 0)&&(valBNb == 0)) {
-//      Speed = 200;
-//      dritto();  
-//    }
-//  }
-//  else{
-//    Speed = 200;
-//    dritto();
-//  }
 }

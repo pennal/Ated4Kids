@@ -9,7 +9,7 @@ int Speed = 100;
 double n = 87.5;
 
 #define trigPin 13
-#define echoPin 10
+#define echoPin 9 
 
 const int servoPin = 2;
 const int deg = 180;
@@ -29,7 +29,7 @@ void setup() {
   int i;
   for(i=5;i<=8;i++)
     pinMode(i, OUTPUT);
-  myservo.write(0);
+  myservo.write(90);
 }
 void aspetta()
 {
@@ -107,8 +107,11 @@ void rotateForAngle(double angolo){
 
 void loop() {
 //  // put your main code here, to run repeatedly:
-
-  int a[l];
+  int dist = getLength();
+  int minDist = 30;
+  if (dist < minDist){
+    aspetta();
+    int a[l];
   myservo.write(0);
   
   for (int i=0; i<l; i++){
@@ -119,7 +122,7 @@ void loop() {
     myservo.write((i+1) * delta);
     delay(150);
   }
-  myservo.write(0);
+  myservo.write(90);
 
   // Trova la distanza maggiore
   double maxValue = a[0];
@@ -140,41 +143,11 @@ void loop() {
   
   Serial.println(angolo);
   rotateForAngle(angolo);
-  delay(500);
-  
-  
-//  // Continua per 5 cm
-//  double V = (double)Speed/255.0;
-//    
-//  double t = (5 * n)/V;
-//  Serial.print("Forward (s): ");
-//  Serial.println(t);
-//  //avanti();
-//  //delay(t);
-//  //aspetta();
-//  Serial.println("END");
-
+  } else {
     avanti();
-    delay(3000);
-    aspetta();
+  }
   
-//    rotateForAngle(120);
-//  delay(1500);
-//  
-//    rotateForAngle(150);
-//  delay(1500);
-//  
-//    rotateForAngle(180);
-//  delay(2500);
-//  
-//    rotateForAngle(120);
-//  delay(1500);
-//  
-//    rotateForAngle(150);
-//  delay(1500);
-//  
-//    rotateForAngle(180);
-//  delay(1500);
+  delay(50);
   
 }
 
