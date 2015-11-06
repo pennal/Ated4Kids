@@ -7,10 +7,10 @@
 class TouchSensor {
     public:
         // Constructor
-        TouchSensor(int pinLeft, int pinRight, int pinCenter);
+        TouchSensor(int pinLeft, int pinRight);
 
         // Read sensor values. 
-        void updateCenterValue();
+        
         void updateLeftValue();
         void updateRightValue();
         void updateAll();
@@ -18,10 +18,9 @@ class TouchSensor {
         // Values of sensors. Use <obj>.leftValue to read
         int leftValue;
         int rightValue;
-        int centerValue;
+        
 
     private:
-        int _pinCenter;
         int _pinLeft;
         int _pinRight;
 };

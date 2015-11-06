@@ -18,31 +18,45 @@ Rover::Rover(){
 }
 
 void Rover::turnLeft(){
-	analogWrite (E1,_speed - _valoreDaSottrarreAVelocita);
-  	digitalWrite(M1,LOW);
-  	analogWrite (E2,_speed);
+  // Internal Wheel
+  if (_internalSpeed < 0){
+    analogWrite (E1,abs(_internalSpeed));
+    digitalWrite(M1,LOW);
+  } else {
+    analogWrite (E1,abs(_internalSpeed));
+    digitalWrite(M1,HIGH);
+  }
+   // externalWheel
+  	analogWrite (E2,_externalSpeed);
   	digitalWrite(M2,HIGH);
 }
 
 void Rover::turnRight(){
-	analogWrite (E1,_speed);
+    // External Wheel
+	  analogWrite (E1,_externalSpeed);
   	digitalWrite(M1,HIGH);
-  	analogWrite (E2, _speed - _valoreDaSottrarreAVelocita);
-  	digitalWrite(M2,LOW);
-
+    //Internal Wheel
+    if (_internalSpeed < 0){
+      analogWrite (E2, abs(_internalSpeed));  
+      digitalWrite(M2,LOW);  
+    } else {
+      analogWrite (E2, abs(_internalSpeed));
+      digitalWrite(M2,HIGH);  
+    }
 }
 
 void Rover::forward(){
-	analogWrite (E1,_speed);
+	analogWrite (E1,_externalSpeed);
   	digitalWrite(M1,HIGH);
-  	analogWrite (E2,_speed);
+  	analogWrite (E2,_externalSpeed);
   	digitalWrite(M2,HIGH);
+
 }
 
 void Rover::stop(){
-	analogWrite (E1,_speed);
+	analogWrite (E1,_externalSpeed);
   	digitalWrite(M1,LOW);
-  	analogWrite (E2,_speed);
+  	analogWrite (E2,_externalSpeed);
   	digitalWrite(M2,LOW);
   	delay(50);
   	analogWrite (E1,0);
@@ -71,38 +85,42 @@ void Rover::turnLeftWithDelay(int theDelay){
 }
 
 void Rover::setSpeed(int speed){
-	_speed = speed;
+	_externalSpeed = speed;
+}
+
+void Rover::setInternalSpeed(int speed){
+  _internalSpeed = speed;
 }
 
 void Rover::rotateForAngle(double angolo){
   double ratio = angolo/360.0;
-  double speedRatio = (255.0/_speed);
+  double speedRatio = (255.0/_externalSpeed);
 
 if (ratio > 0){
-    analogWrite (E1,_speed);
+    analogWrite (E1,_externalSpeed);
     digitalWrite(M1,LOW);
-    analogWrite (E2,_speed);
+    analogWrite (E2,_externalSpeed);
     digitalWrite(M2,HIGH);
     
     delay(rotationalDelay*ratio*speedRatio*0.8);
 
-    analogWrite (E1,_speed);
+    analogWrite (E1,_externalSpeed);
     digitalWrite(M1,HIGH);
-    analogWrite (E2,_speed);
+    analogWrite (E2,_externalSpeed);
     digitalWrite(M2,LOW);
 
     
 } else {
-  analogWrite (E1,_speed);
+  analogWrite (E1,_externalSpeed);
     digitalWrite(M1,HIGH);
-    analogWrite (E2,_speed);
+    analogWrite (E2,_externalSpeed);
     digitalWrite(M2,LOW);
     
     delay(rotationalDelay*ratio*(-1)*speedRatio*0.8);
 
-    analogWrite (E1,_speed);
+    analogWrite (E1,_externalSpeed);
     digitalWrite(M1,LOW);
-    analogWrite (E2,_speed);
+    analogWrite (E2,_externalSpeed);
     digitalWrite(M2,HIGH);
 
 }

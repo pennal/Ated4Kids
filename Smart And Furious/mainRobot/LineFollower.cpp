@@ -5,7 +5,7 @@ LineFollower::LineFollower(int pinLeft, int pinRight, int pinCenter){
 	pinMode(pinLeft,INPUT);
 	pinMode(pinRight,INPUT);
 	pinMode(pinCenter,INPUT);
-  Serial.println("LineFollower Constructed");
+  //Serial.println("LineFollower Constructed");
 
   
 

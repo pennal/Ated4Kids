@@ -8,6 +8,7 @@ class Rover {
 	public:
 		// Constructor
 		Rover();
+		
 		// Methods. Use to command the robot
 		void turnLeft();
 		void turnRight();
@@ -15,14 +16,12 @@ class Rover {
 		void stop();
 
 		void turnRightWithDefaultDelay();
-
-		void turnLeftWithDefaultDelay();
-
-
-		void turnRightWithDelay(int theDelay);
-
+    void turnLeftWithDefaultDelay();
+    void turnRightWithDelay(int theDelay);
 		void turnLeftWithDelay(int theDelay);
+	 	
 	 	void setSpeed(int speed);
+    void setInternalSpeed(int speed);
 
 		void rotateForAngle(double angolo);
 
@@ -32,9 +31,8 @@ class Rover {
 		int turnDelay = 80;
 
 	private:
-		int _speed = 120;
-
-		int _valoreDaSottrarreAVelocita = 20;
+		int _externalSpeed = 140;
+    int _internalSpeed = 140;
 };
 
 #endif
