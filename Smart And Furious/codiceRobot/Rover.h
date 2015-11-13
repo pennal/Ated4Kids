@@ -13,6 +13,7 @@ class Rover {
 		void turnLeft();
 		void turnRight();
 		void forward();
+   void backward();
 		void stop();
 
 		void turnRightWithDefaultDelay();

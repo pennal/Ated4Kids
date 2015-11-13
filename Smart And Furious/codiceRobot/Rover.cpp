@@ -53,6 +53,14 @@ void Rover::forward(){
 
 }
 
+void Rover::backward(){
+  analogWrite (E1,_externalSpeed);
+    digitalWrite(M1,LOW);
+    analogWrite (E2,_externalSpeed);
+    digitalWrite(M2,LOW);
+
+}
+
 void Rover::stop(){
 	analogWrite (E1,_externalSpeed);
   	digitalWrite(M1,LOW);
